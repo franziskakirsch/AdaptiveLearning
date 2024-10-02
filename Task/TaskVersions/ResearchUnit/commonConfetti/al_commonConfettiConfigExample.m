@@ -10,7 +10,7 @@
 config = struct();
 
 % Add desired parameters
-config.trialsExp = 20;
+config.trialsExp = 200;
 config.nBlocks = 2;
 config.practTrialsVis = 10;
 config.practTrialsHid = 20; 
