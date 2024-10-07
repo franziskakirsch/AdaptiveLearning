@@ -11,7 +11,7 @@
 config = struct();
 
 % Add desired parameters
-config.trialsExp = 5;
+config.trialsExp = 30;
 config.nBlocks = 2;
 config.practTrialsVis = 10;
 config.practTrialsHid = 20; 
@@ -24,21 +24,21 @@ config.blockIndices = [1 999 999 999]; % we don't have breaks within each block
 config.runIntro = true; % false;
 config.baselineArousal = false; % true;
 config.language = 'German'; % 'English';
-config.sentenceLength = 100;
+config.sentenceLength = 85; %100;
 config.textSize = 35;
 config.vSpacing = 1;
 config.headerSize = 50;
 config.screenSize = get(0,'MonitorPositions')*1.0; %[0 0 1920 1080]*1 
 config.screenNumber = 1;
-config.s = 40;
-config.enter = 37;
+config.s = 83; %40;
+config.enter = 13; %37;
 config.five = 15;
 config.defaultParticles = true;
 config.debug = false;
 config.showConfettiThreshold = false;
 config.printTiming = true;
 config.hidePtbCursor = true;
-config.dataDirectory = '~/Dropbox/AdaptiveLearning/DataDirectory';
+config.dataDirectory = 'C:\Users\heli23\Documents\GitHub\AdaptiveLearning\Results';
 config.meg = false;
 config.scanner = false;
 config.eyeTracker = false; %true;
