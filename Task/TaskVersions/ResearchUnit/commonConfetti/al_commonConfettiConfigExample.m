@@ -10,7 +10,7 @@
 config = struct();
 
 % Add desired parameters
-config.trialsExp = 200;
+config.trialsExp = 5;
 config.nBlocks = 2;
 config.practTrialsVis = 10;
 config.practTrialsHid = 20; 
@@ -25,7 +25,7 @@ config.sentenceLength = 100;
 config.textSize = 35;
 config.vSpacing = 1;
 config.headerSize = 50;
-config.screenSize = [0 0 1920 1080]*1; % get(0,'MonitorPositions')*1.0;
+config.screenSize = get(0,'MonitorPositions')*1.0; %[0 0 1920 1080]*1 
 config.screenNumber = 1;
 config.s = 40;
 config.enter = 37;
