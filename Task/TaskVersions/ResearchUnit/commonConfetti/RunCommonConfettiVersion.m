@@ -36,11 +36,13 @@ if ~exist('config', 'var') || isempty(config)
     config.nBlocks = 2;
     config.practTrialsVis = 10;
     config.practTrialsHid = 20;
+    config.cannonPractCriterion = 4;
+    config.cannonPractNumOutcomes = 5;
     config.passiveViewingPractTrials = 10;
     config.passiveViewing = false;
     config.baselineFixLength = 0.25;
     config.blockIndices = [1 51 101 151];
-    config.runIntro = false;
+    config.runIntro = true;
     config.baselineArousal = false;
     config.language = 'German';
     config.sentenceLength = 100;
@@ -52,6 +54,7 @@ if ~exist('config', 'var') || isempty(config)
     config.s = 40;
     config.five = 15;
     config.enter = 37;
+    config.defaultParticles = false;
     config.debug = false;
     config.showConfettiThreshold = false;
     config.printTiming = true;
@@ -118,6 +121,8 @@ trialsExp = config.trialsExp; % number of experimental trials per block
 nBlocks = config.nBlocks; % number of blocks for each 
 practTrialsVis = config.practTrialsVis; % number of practice trials visible cannon
 practTrialsHid = config.practTrialsHid; % number of practice trials hidden cannon
+cannonPractCriterion = config.cannonPractCriterion; % criterion cannon practice
+cannonPractNumOutcomes = config.cannonPractNumOutcomes; % number of trials cannon practice
 passiveViewingPractTrials = config.passiveViewingPractTrials;
 passiveViewing = config.passiveViewing; % Passive viewing for pupillometry validation
 baselineFixLength = config.baselineFixLength;
@@ -134,6 +139,7 @@ screenNumber = config.screenNumber; % screen number
 s = config.s; % s key
 enter = config.enter; % enter key
 five = config.five; % number 5 for triggering at UKE
+defaultParticles = config.defaultParticles;
 debug = config.debug; % debug mode
 showConfettiThreshold = config.showConfettiThreshold; % confetti threshold for validation (don't use in experiment)
 printTiming = config.printTiming; % print timing for checking
@@ -197,8 +203,6 @@ catchTrialProb = 0.1;
 % Number of predictions above threshold and estimation-error size leading to repetition of block
 practiceTrialCriterionNTrials = 2;
 practiceTrialCriterionEstErr = 9;
-cannonPractCriterion = 4;
-cannonPractNumOutcomes = 5;
 
 % Reward magnitude
 rewMag = 0.1;
@@ -233,7 +237,7 @@ tickLengthPredDeg = 0.9;
 tickLengthOutcDeg = 0.7; 
 tickLengthShieldDeg = 1.1;
 particleSizeDeg = 0.1;
-confettiStdDeg = 0.1;
+confettiStdDeg = 0.08; %0.1;
 imageRectDeg = [0 0 1.1 3.7];
 
 % ---------------------------------------------------
@@ -249,6 +253,11 @@ end
 % Check if practice trials exceeds max of 20
 if practTrialsVis > 20 || practTrialsHid > 20
     error('Practice trials max 20 (because pre-defined)')
+end
+
+% Check if cannon practice trials is too low
+if cannonPractNumOutcomes < 2
+    error('Cannon practice trials has to be 2 or larger')
 end
 
 % Initialize general task parameters
@@ -312,7 +321,7 @@ trialflow.colors = 'colorful';
 % Create object instance with cannon parameters
 % ---------------------------------------------
 
-cannon = al_cannon();
+cannon = al_cannon(defaultParticles);
 cannon.nParticles = nParticles;
 cannon.confettiStd = confettiStd;
 cannon.confettiAnimationStd = confettiAnimationStd;
@@ -543,7 +552,7 @@ if display.useDegreesVisualAngle
     circle.tickLengthShield = display.deg2pix(tickLengthShieldDeg);
     circle = circle.getShieldOffset();
     %fprintf('\nYou have chosen to use degrees of visual angle.\n\nRotation radius in degrees visual angle: %.2f\n\nIn pixels: %.2f. Other stimuli adjusted accordingly!\n\n',round(rotationRadDeg,2), round(circle.rotationRad, 2));
-    fprintf('\nYou have chosen to use degrees of visual angle.\n\nRotation radius in degrees visual angle: %.2f\n\nIn pixels: %.2f. Other stimuli adjusted accordingly!\n\n',rotationRadDeg, circle.rotationRad);
+    fprintf('\nYou have chosen to use degrees of visual angle.\n\nRotation radius in degrees visual angle: %.2f\n\nIn pixels: %.2f. Other stimuli adjusted accordingly!\n\n', rotationRadDeg, circle.rotationRad);
 elseif display.useDegreesVisualAngle == false
     circle.rotationRad = rotationRadPixel;
 else

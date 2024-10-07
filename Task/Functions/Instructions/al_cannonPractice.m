@@ -98,7 +98,7 @@ for i = 1:nTrials
     Screen('DrawDots', taskParam.display.window.onScreen, taskParam.cannon.xyMatrixRing, taskParam.cannon.sCloud, taskParam.cannon.colvectCloud, [taskParam.display.window.centerX, taskParam.display.window.centerY], 1);
     al_drawFixPoint(taskParam)
 
-    % Ensure that last 5 tick marks are shown
+    % Ensure that last tick marks are shown
     al_showTickMarkSeries(taskData, taskParam, i)
 
     % Also present the current outcome
@@ -146,7 +146,7 @@ for i = 1:nTrials
 
         % Show estimate and compare to actual cannon
         alpha = 0.4;
-        sampleMean = rad2deg(circ_mean(deg2rad(taskData.outcome(i-4:i))));
+        sampleMean = rad2deg(circ_mean(deg2rad(taskData.outcome(i-(taskParam.gParam.cannonPractNumOutcomes-1):i)))); 
         al_drawCannon(taskParam, taskData.pred(i), alpha, [1 1 1])
         al_aim(taskParam, taskData.pred(i))
         al_drawCannon(taskParam, sampleMean)
@@ -161,7 +161,14 @@ for i = 1:nTrials
             testPassed = testPassed + 1;
         end
 
-        cannonText = strcat(cannonText, '\n\nHier können Sie Ihre Angabe und die echte Konfetti-Kanone vergleichen.');
+        % Cannon feedback
+        if taskParam.gParam.customInstructions
+           cannonText = strcat(cannonText, taskParam.instructionText.cannonFeedbackText);
+
+        else
+            cannonText = strcat(cannonText, '\n\nHier können Sie Ihre Angabe und die echte Konfetti-Kanone vergleichen.');
+        end
+
         DrawFormattedText(taskParam.display.window.onScreen,cannonText, 'center', taskParam.display.screensize(4)*0.05, [255 255 255], taskParam.strings.sentenceLength, [], [], taskParam.strings.vSpacing);
         DrawFormattedText(taskParam.display.window.onScreen, taskParam.strings.txtPressEnter, 'center', taskParam.display.screensize(4)*0.9);
         Screen('Flip', taskParam.display.window.onScreen);

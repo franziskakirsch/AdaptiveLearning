@@ -196,7 +196,7 @@ while 1
     % If estimation error is larger than a criterion on more than five
     % trials, we repeat the instructions
     repeatBlock = sum(abs(taskData.estErr) >= taskParam.gParam.practiceTrialCriterionEstErr);
-    if sum(repeatBlock) > taskParam.gParam.practiceTrialCriterionNTrials
+    if (sum(repeatBlock) > taskParam.gParam.practiceTrialCriterionNTrials) && taskParam.unitTest.run == false
         WaitSecs(0.5)
         if taskParam.gParam.customInstructions
             header = taskParam.instructionText.practiceBlockFailHeader;
@@ -279,7 +279,9 @@ while 1
     file_name_suffix = sprintf('_b%i', b);
 
     % Generate outcomes using cannon-data function using average concentration
-    taskParam.gParam.blockIndices = [1, 6, 11, 16];
+    nRep = taskParam.gParam.practTrialsHid/taskParam.gParam.cannonPractNumOutcomes;
+    endPoint = taskParam.gParam.practTrialsHid;
+    taskParam.gParam.blockIndices = linspace(1, endPoint+1, nRep+1);
     taskParam.gParam.catchTrialProb = 0.0;
     taskData = taskData.al_cannonData(taskParam, haz, concentration, taskParam.gParam.safe);
 
@@ -290,7 +292,7 @@ while 1
     testPassed = al_cannonPractice(taskParam, taskData, nTrials, file_name_suffix);
 
     % If estimation error was too large, we repeat the instructions
-    if sum(testPassed) < taskParam.gParam.cannonPractCriterion
+    if (sum(testPassed) < taskParam.gParam.cannonPractCriterion)  && taskParam.unitTest.run == false
         WaitSecs(0.5)
         if taskParam.gParam.customInstructions
             header = taskParam.instructionText.practiceBlockFailHeader;
